@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- 默认时的背景图片 -->
+<!--    <item android:drawable="@drawable/menu_frame_scale_no_focused"/>-->
+<!--    &lt;!&ndash; 没有焦点时的背景图片 &ndash;&gt;-->
+<!--    <item android:drawable="@drawable/menu_frame_scale_no_focused" android:state_window_focused="false"/>-->
+<!--    &lt;!&ndash; 非触摸模式下获得焦点并单击时的背景图片 &ndash;&gt;-->
+<!--    <item android:drawable="@drawable/menu_frame_scale_focused" android:state_focused="true" android:state_pressed="true"/>-->
+
+<!--    &lt;!&ndash; 触摸模式下单击时的背景图片 &ndash;&gt;-->
+<!--    <item android:drawable="@drawable/menu_frame_scale_focused" android:state_focused="false" android:state_pressed="true"/>-->
+
+    <!-- 选中时的图片背景 -->
+
+<!--    <item android:drawable="@drawable/menu_frame_scale_focused" android:state_selected="true"/>-->
+
+    <!-- 获得焦点时的图片背景 -->
+<!--    <item android:drawable="@drawable/jiaodian" android:state_focused="true"/>-->
+    <!--<item android:state_focused="true">-->
+        <!--<shape>-->
+            <!--&lt;!&ndash;<solid android:color="#0099ff"/>&ndash;&gt;-->
+            <!--<corners android:radius="3sp"/>-->
+            <!--<stroke android:width="2sp" android:color="#0099ff"/>-->
+        <!--</shape>-->
+    <!--</item>-->
+
+    <item >
+        <shape>
+            <!--<solid android:color="#0099ff"/>-->
+            <corners android:radius="3dp"/>
+            <stroke android:width="5dp" android:color="#0099ff"/>
+        </shape>
+    </item>
+
+</selector>

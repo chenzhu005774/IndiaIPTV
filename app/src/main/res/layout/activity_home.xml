@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:navigation="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/tools"
+    android:background="@mipmap/bg_main"
+    android:clipChildren="false"
+    app:ignore="all">
+
+    <com.amt.indiaiptv.utils.customizeview.MyVideoView
+        android:layout_width="match_parent"
+        android:id="@+id/videoview"
+        android:layout_height="match_parent" />
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <com.zhouwei.mzbanner.MZBannerView
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:id="@+id/mz_view_pager"
+        android:layout_marginLeft="90px"
+        android:layout_marginRight="90px"
+        android:layout_width="match_parent"
+        android:layout_height="604.5px"
+        android:layout_marginTop="150px"
+        app:open_mz_mode="true"
+        app:canLoop="false"
+        app:indicatorAlign="left"
+        app:indicatorPaddingLeft="12px" />
+
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/arr_left"
+        android:layout_width="15.59px"
+        android:layout_height="24.71px"
+        android:layout_marginLeft="104.26px"
+        android:layout_marginTop="905.92px"
+        android:background="@drawable/arrowleftnl"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/arr_right"
+        android:layout_width="15.59px"
+        android:layout_height="24.71px"
+        android:layout_marginLeft="180.14px"
+        android:layout_marginTop="905.92px"
+        android:background="@drawable/arrowright"
+        android:visibility="visible"/>
+
+
+    <android.support.v17.leanback.widget.HorizontalGridView
+        android:id="@+id/hg_title"
+        android:layout_marginLeft="321.51px"
+        android:layout_marginTop="835.88px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"/>
+
+     <RelativeLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_marginTop="23px"
+        android:layout_marginLeft="45px"
+        android:src="@mipmap/icon"
+        android:layout_width="60px"
+        android:layout_height="60px" />
+
+    <TextView
+        android:layout_marginLeft="120px"
+        android:layout_marginTop="31.5px"
+        android:textColor="#ffffff"
+        android:textSize="36px"
+        android:text="EPG Studio"
+        android:layout_width="213px"
+        android:layout_height="42px" />
+
+
+    <ImageView
+        android:layout_marginLeft="1509px"
+        android:src="@mipmap/sun"
+        android:layout_marginTop="22.5px"
+        android:layout_width="60px"
+        android:layout_height="60px" />
+
+
+    <TextView
+        android:layout_marginLeft="1584.02px"
+        android:layout_marginTop="31.5px"
+        android:textColor="#ffffff"
+        android:textSize="36px"
+        android:text="26°C"
+        android:layout_width="81px"
+        android:layout_height="46.5px" />
+
+    <TextView
+        android:background="#33ffffff"
+        android:layout_marginLeft="1710px"
+        android:layout_marginTop="31.5px"
+        android:textSize="36px"
+        android:layout_width="3px"
+        android:layout_height="45px" />
+
+    <TextClock
+        android:textColor="#ffffff"
+        android:textSize="45px"
+        android:format12Hour="HH:mm"
+        android:layout_marginTop="25.5px"
+        android:layout_marginLeft="1758px"
+        android:layout_width="112.5px"
+        android:layout_height="54px" />
+
+</RelativeLayout>
+
+</RelativeLayout>
+
+
+
+    <!--</RelativeLayout>-->
