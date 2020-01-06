@@ -62,8 +62,8 @@ public interface ApiService {
 
 
     //获取首页
-    @GET("apk/template/getPage")
-    Call<ResponseBody> getPage(@Query("dataCode") String dataCode, @Query("orgCode") String orgCode);
+    @GET("vee/componentInstance/findPage")
+    Call<ResponseBody> getPage(@Query("pageCode") String pageCode,@Query("pageSize") int pageSize,@Query("pageNumber") int pageNumber);
 
 
     //   获取token

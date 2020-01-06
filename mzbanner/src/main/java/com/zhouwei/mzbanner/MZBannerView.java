@@ -109,7 +109,8 @@ public class MZBannerView<T> extends RelativeLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.MZBannerView);
         mIsOpenMZEffect = typedArray.getBoolean(R.styleable.MZBannerView_open_mz_mode,true);
         mIsMiddlePageCover = typedArray.getBoolean(R.styleable.MZBannerView_middle_page_cover,true);
-        mIsCanLoop = typedArray.getBoolean(R.styleable.MZBannerView_canLoop,false);
+        mIsCanLoop = typedArray.getBoolean(R.styleable.MZBannerView_canLoop,true);
+//        mIsCanLoop = typedArray.getBoolean(R.styleable.MZBannerView_canLoop,false);//开启则是无限循环
         mIndicatorAlign = typedArray.getInt(R.styleable.MZBannerView_indicatorAlign,IndicatorAlign.CENTER.ordinal());
         mIndicatorPaddingLeft = typedArray.getDimensionPixelSize(R.styleable.MZBannerView_indicatorPaddingLeft,0);
         mIndicatorPaddingRight = typedArray.getDimensionPixelSize(R.styleable.MZBannerView_indicatorPaddingRight,0);
@@ -316,6 +317,12 @@ public class MZBannerView<T> extends RelativeLayout {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() +1, true);
         }
         System.out.println("mViewPager.getCurrentItem():"+mViewPager.getCurrentItem());
+    }
+
+
+    public  int  getmCurrentItem(){
+
+        return mViewPager.getCurrentItem();
     }
 
     public void start(){

@@ -8,4 +8,12 @@
     <color name="orange">#f97f46</color>
     <color name="common_white">#ffffff</color>
     <color name="white">#FFFFFF</color>
+
+
+    <color name="hint">#ff9499cb</color>
+    <color name="blue">#0263F6</color>
+    <color name="whithe">#ffffff</color>
+    <color name="halfwhite">#22000000</color>
+    <color name="fouhalfwhite">#44000000</color>
+    <color name="update_theme_color">#FFFFAC5D</color>
 </resources>

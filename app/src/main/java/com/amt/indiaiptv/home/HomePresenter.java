@@ -81,12 +81,13 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
 
     @Override
     public void showDirection(Activity activity) {
+        System.out.println("position：：："+position);
         ImageView arr_left =activity.findViewById(R.id.arr_left);
         ImageView arr_right =activity.findViewById(R.id.arr_right);
-        if (position==0){
+        if (position<1){
             arr_left.setImageResource(R.drawable.arrowleftnl);
             arr_left.setAlpha(0.5f);
-        }else if (position==7){
+        }else if (position>5){
             arr_right.setImageResource(R.drawable.arrowrightnl);
             arr_right.setAlpha(0.5f);
         }else {

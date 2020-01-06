@@ -13,9 +13,11 @@
         android:id="@+id/videoview"
         android:layout_height="match_parent" />
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
+    <RelativeLayout
+        android:background="#80000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    </RelativeLayout>
 
     <com.zhouwei.mzbanner.MZBannerView
         android:focusableInTouchMode="false"
@@ -59,6 +61,7 @@
         android:layout_marginTop="835.88px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="90px"
         android:focusable="true"/>
 
      <RelativeLayout

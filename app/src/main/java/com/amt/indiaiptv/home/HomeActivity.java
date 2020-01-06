@@ -1,16 +1,21 @@
 package com.amt.indiaiptv.home;
 
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
+import android.support.v17.leanback.widget.FocusHighlight;
+import android.support.v17.leanback.widget.FocusHighlightHelper;
 import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ItemBridgeAdapter;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.amt.indiaiptv.R;
+import com.amt.indiaiptv.detail.DetailActivity;
 import com.amt.indiaiptv.mvp.MVPBaseActivity;
 import com.amt.indiaiptv.utils.bean.ViewPagerHolder;
 import com.amt.indiaiptv.utils.customizeview.MyVideoView;
@@ -20,16 +25,19 @@ import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 
 
+
 /**
  * MVPPlugin
  */
 
 public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresenter> implements HomeContract.View {
-    private int[] ids ={R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3};
+    private int[] ids ={R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3};
     private MyVideoView videoview;
     private MZBannerView mMZBannerView;
     HorizontalGridView horizontalGridView;
-
+    TitlePresenter titlePresenter;
+    ArrayObjectAdapter arrayObjectAdapter ;
+    ItemBridgeAdapter itemBridgeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +63,6 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
         videoview.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bg));
         //        videoview.setVideoURI(Uri.parse("http://192.168.2.40:9000/fnxn2.mp4"));
         //播放
-        videoview.start();
         //设置为静音
         videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -67,12 +74,14 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
     }
     @Override
     public void initView() {
+
         horizontalGridView = findViewById(R.id.hg_title);
         horizontalGridView.setHorizontalSpacing(132);
-        horizontalGridView.setSelectedPosition(0);
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new TitlePresenter());
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        //        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_LARGE, true);
+        titlePresenter =new TitlePresenter();
+        arrayObjectAdapter = new ArrayObjectAdapter(titlePresenter);
+        itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
+
+
         horizontalGridView.setAdapter(itemBridgeAdapter);
         arrayObjectAdapter.addAll(0, TitleModel.getTitleList());
         horizontalGridView.requestFocus();
@@ -86,20 +95,34 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
             }
         },1000);
 
+        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_LARGE, false);
+//        FocusHighlightHelper.setupHeaderItemFocusHighlight(itemBridgeAdapter,true);
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        mPresenter.position=horizontalGridView.getSelectedPosition();
-        mPresenter.showDirection(this);
+
         if (keyCode==KeyEvent.KEYCODE_DPAD_RIGHT){
             mMZBannerView.viewpageMove(false);
+            mPresenter.position=horizontalGridView.getSelectedPosition();
+            mPresenter.showDirection(this);
+            if (mPresenter.position==6){
+
+                itemBridgeAdapter.notifyItemChanged(6);
+                horizontalGridView.scrollToPosition(0);
+            }
         }else if (keyCode==KeyEvent.KEYCODE_DPAD_LEFT){
+            mPresenter.position=horizontalGridView.getSelectedPosition();
+            mPresenter.showDirection(this);
             mMZBannerView.viewpageMove(true);
+            if (mPresenter.position==0){
+                horizontalGridView.scrollToPosition(6);
+            }
         }else if (keyCode==KeyEvent.KEYCODE_DPAD_UP){
-            Toast.makeText(this, horizontalGridView.getSelectedPosition()+"", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, DetailActivity.class));
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-            Toast.makeText(this, horizontalGridView.getSelectedPosition()+"", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, DetailActivity.class));
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_BACK) {
             mPresenter.showVideo(this);
@@ -109,5 +132,16 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoview.start();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        videoview.pause();
+
+    }
 }

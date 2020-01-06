@@ -29,8 +29,7 @@ public class Api {
     String HOST = "http://gank.io/";
     String API_SERVER_URL = HOST + "api/data/";
 //    private final String basUrl=API_SERVER_URL;
-   private final String basUrl = "http://192.168.2.207:1790/industry-iptv-api/";
-//    private final String basUrl = "http://192.168.2.83:8083/industry-iptv-api/";
+   private final String basUrl = "http://192.168.2.207:9000/vee_api/";
 
     /**
      * 构造方法私有化
