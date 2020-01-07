@@ -101,7 +101,11 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                     case "s_img":
                         ImageViewToolBean imageViewToolBean_nf = new ImageViewToolBean();
                         //没有焦点图片
-                       imageViewToolBean_nf.setUrl(itemjson.getString("icon"));
+                        if (!itemcJson.getJSONObject("pic").isNull("pic")) {
+                            imageViewToolBean_nf.setUrl(itemcJson.getJSONObject("pic").getString("pic"));
+                        } else {
+                            imageViewToolBean_nf.setUrl("");
+                        }
                         imageViewToolBean_nf.setHeigh(itemcJson.getJSONObject("base").getInt("height"));
                         imageViewToolBean_nf.setWidth(itemcJson.getJSONObject("base").getInt("width"));
                         imageViewToolBean_nf.setMarleft(itemcJson.getJSONObject("base").getInt("x"));

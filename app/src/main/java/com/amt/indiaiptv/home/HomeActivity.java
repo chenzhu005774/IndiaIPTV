@@ -1,6 +1,5 @@
 package com.amt.indiaiptv.home;
 
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,6 +16,8 @@ import android.view.KeyEvent;
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.detail.DetailActivity;
 import com.amt.indiaiptv.mvp.MVPBaseActivity;
+import com.amt.indiaiptv.utils.DialogCallback;
+import com.amt.indiaiptv.utils.LogUtils;
 import com.amt.indiaiptv.utils.bean.ViewPagerHolder;
 import com.amt.indiaiptv.utils.customizeview.MyVideoView;
 import com.amt.indiaiptv.utils.horizontalgridview.TitleModel;
@@ -30,7 +31,7 @@ import com.zhouwei.mzbanner.holder.MZHolderCreator;
  * MVPPlugin
  */
 
-public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresenter> implements HomeContract.View {
+public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresenter> implements HomeContract.View,DialogCallback {
     private int[] ids ={R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3};
     private MyVideoView videoview;
     private MZBannerView mMZBannerView;
@@ -38,11 +39,12 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
     TitlePresenter titlePresenter;
     ArrayObjectAdapter arrayObjectAdapter ;
     ItemBridgeAdapter itemBridgeAdapter;
+    private static double DOUBLE_CLICK_TIME = 0L; //防止一直按着不放
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mPresenter.init();
+        mPresenter.init("4b52aa86460d4ef6ad99cbbe6e0471d9");
 
     }
     @Override
@@ -61,7 +63,6 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
         //设置播放加载路径
         videoview =findViewById(R.id.videoview);
         videoview.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bg));
-        //        videoview.setVideoURI(Uri.parse("http://192.168.2.40:9000/fnxn2.mp4"));
         //播放
         //设置为静音
         videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -71,7 +72,14 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
                 mediaPlayer.setVolume(0f, 0f);
             }
         });
+        videoview.start();
     }
+
+    @Override
+    public void getDataFail() {
+
+    }
+
     @Override
     public void initView() {
 
@@ -86,7 +94,6 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
         arrayObjectAdapter.addAll(0, TitleModel.getTitleList());
         horizontalGridView.requestFocus();
         horizontalGridView.setSelectedPosition(mPresenter.position);
-         //        horizontalGridView.setFocusScrollStrategy(FOCUS_SCROLL_PAGE);
         horizontalGridView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -96,35 +103,59 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
         },1000);
 
         FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_LARGE, false);
-//        FocusHighlightHelper.setupHeaderItemFocusHighlight(itemBridgeAdapter,true);
     }
+
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode==KeyEvent.KEYCODE_DPAD_RIGHT){
-            mMZBannerView.viewpageMove(false);
-            mPresenter.position=horizontalGridView.getSelectedPosition();
-            mPresenter.showDirection(this);
-            if (mPresenter.position==6){
 
-                itemBridgeAdapter.notifyItemChanged(6);
-                horizontalGridView.scrollToPosition(0);
+            if((System.currentTimeMillis() - DOUBLE_CLICK_TIME)>80){
+                mMZBannerView.viewpageMove(false);
+                mPresenter.position=horizontalGridView.getSelectedPosition();
+                mPresenter.showDirection(this);
+                if (mPresenter.position==6){
+                    itemBridgeAdapter.notifyItemChanged(6);
+                    horizontalGridView.scrollToPosition(0);
+                }
+
+            }else{
+               return true;
             }
+
+            DOUBLE_CLICK_TIME = System.currentTimeMillis();
+
         }else if (keyCode==KeyEvent.KEYCODE_DPAD_LEFT){
-            mPresenter.position=horizontalGridView.getSelectedPosition();
-            mPresenter.showDirection(this);
-            mMZBannerView.viewpageMove(true);
-            if (mPresenter.position==0){
-                horizontalGridView.scrollToPosition(6);
+            if((System.currentTimeMillis() - DOUBLE_CLICK_TIME)>80) {
+                mPresenter.position = horizontalGridView.getSelectedPosition();
+                mPresenter.showDirection(this);
+                mMZBannerView.viewpageMove(true);
+                if (mPresenter.position == 0) {
+                    horizontalGridView.scrollToPosition(6);
+                }
+            }else {
+                return  true;
             }
+            DOUBLE_CLICK_TIME = System.currentTimeMillis();
         }else if (keyCode==KeyEvent.KEYCODE_DPAD_UP){
-            startActivity(new Intent(this, DetailActivity.class));
+            Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+            startActivity(intent);
+
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-            startActivity(new Intent(this, DetailActivity.class));
+            Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+            startActivity(intent);
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if((System.currentTimeMillis() - DOUBLE_CLICK_TIME)<500) {
+                LogUtils.showDialog(this,"是否退出",this);
+            }
+            DOUBLE_CLICK_TIME = System.currentTimeMillis();
             mPresenter.showVideo(this);
             return true;
         }
@@ -135,13 +166,20 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
     @Override
     protected void onResume() {
         super.onResume();
+        if (videoview!=null)
         videoview.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (videoview!=null)
         videoview.pause();
 
+    }
+
+    @Override
+    public void clickSure() {
+        this.finish();
     }
 }

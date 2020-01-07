@@ -46,7 +46,7 @@ final public class TextViewTool {
         textView.setHeight(textViewToolBean.getHeigh());
         textView.setGravity(Gravity.CENTER);
         textView.setText(textViewToolBean.getText());
-        textView.setTextSize(textViewToolBean.getTextsize());
+//        textView.setTextSize(textViewToolBean.getTextsize());
         textView.setTextColor(commonBean.getContext().getResources().getColor(R.color.white));
         rootlayout.addView(textView);
         commonBean.getLayout().addView(rootlayout);

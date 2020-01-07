@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -30,9 +31,7 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         parentlayout = findViewById(R.id.root);
-//        getWindow().setEnterTransition(new Explode().setDuration(1000));
-//        getWindow().setExitTransition(new Explode().setDuration(1000));
-        mPresenter.getData("ffdab1c1f3a443408d7ed1b52edde537");
+        mPresenter.getData("96e23df0f7084f88a6eda6333d464b1e");
     }
 
 
@@ -57,15 +56,9 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
 
     @Override
     public void clickSure() {
-        mPresenter.getData("e2adc9f9ae3c4ffea0986f28e277a84a");
+        mPresenter.getData("96e23df0f7084f88a6eda6333d464b1e");
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        View rootview = this.getWindow().getDecorView();
-        View aaa = rootview.findFocus();
-        LogUtils.i("tag", aaa.toString());
-        return super.onKeyDown(keyCode, event);
 
-    }
+
 }

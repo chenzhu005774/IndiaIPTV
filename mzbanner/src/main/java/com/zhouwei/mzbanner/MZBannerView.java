@@ -151,6 +151,11 @@ public class MZBannerView<T> extends RelativeLayout {
 
     }
 
+    public void setOpenMZEffect(boolean mIsOpenMZEffect){
+        this.mIsOpenMZEffect =mIsOpenMZEffect;
+        mIsCanLoop =true;
+    }
+
     /**
      * 是否开启魅族模式
      */

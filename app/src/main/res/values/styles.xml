@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
     </style>
+    <!--欢迎界面主题-->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/hotel1</item>
+    </style>
 
 
 </resources>

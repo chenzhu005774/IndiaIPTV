@@ -14,12 +14,12 @@
         android:scaleType="fitXY"
         />
     <TextView
-        android:visibility="gone"
+        android:text="依然饭特稀"
         android:id="@+id/page_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="16sp"
+        android:textSize="53sp"
         android:textColor="@android:color/white"
         android:layout_centerInParent="true"
         />

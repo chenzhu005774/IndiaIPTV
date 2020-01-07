@@ -17,10 +17,11 @@ public class HomeContract {
         void  initView();
         void  initBaner();
         void  setVideo();
+        void  getDataFail();
     }
 
     interface  Presenter extends BasePresenter<View> {
-        void init();
+        void init(String code);
         List<DataEntry> mockData(int[] ids);
         void showVideo(Activity activity);
         void showDirection(Activity activity );

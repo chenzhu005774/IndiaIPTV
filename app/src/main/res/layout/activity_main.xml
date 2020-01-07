@@ -3,19 +3,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@mipmap/bg_main"
     android:clipChildren="false">
 
-
-    <com.owen.tvrecyclerview.widget.TvRecyclerView
-        android:orientation="horizontal"
+    <com.zhouwei.mzbanner.MZBannerView
+        android:id="@+id/banner_normal"
         android:layout_width="match_parent"
-        android:layout_height="200px"
-        android:id="@+id/recyview"
-        app:tv_selectedItemIsCentered="true"
-        app:tv_numColumns="7"
-        app:tv_numRows="1"
-        app:tv_layoutManager="V7LinearLayoutManager"/>
+        android:layout_height="match_parent"
+        app:open_mz_mode="false"
+        app:canLoop="true"
+        />
+
+    <RelativeLayout
+        android:background="#7f000000"
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <ImageView
+        android:src="@mipmap/jiudian"
+        android:layout_marginTop="186px"
+        android:layout_marginLeft="864px"
+        android:layout_width="194px"
+        android:layout_height="164px" />
+
+    <com.amt.indiaiptv.utils.customizeview.RoundProgressBar
+        android:id="@+id/roundProgressBar"
+        android:layout_marginTop="782px"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="915px"
+        android:layout_marginRight="915px"
+        />
+    <TextView
+        android:fontFamily="serif-monospace"
+        android:layout_centerHorizontal="true"
+        android:text="Hi"
+        android:textColor="@color/white"
+        android:textSize="92px"
+        android:layout_marginLeft="765px"
+        android:layout_marginTop="422px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:fontFamily="serif-monospace"
+        android:layout_centerHorizontal="true"
+        android:text="Welcome to InterContinental Hong Kong"
+        android:textColor="@color/white"
+        android:textSize="60px"
+        android:layout_marginTop="561px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:text="Press “OK” to enter home"
+        android:textColor="#66FFFFFF"
+        android:textSize="30px"
+        android:layout_marginLeft="750px"
+        android:layout_marginTop="909px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_marginTop="826px"
+        android:layout_marginLeft="831px"
+        android:layout_width="60px"
+        android:layout_height="2px"/>
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_marginTop="826px"
+        android:layout_marginLeft="1031px"
+        android:layout_width="60px"
+        android:layout_height="2px"/>
 
 </RelativeLayout>
 

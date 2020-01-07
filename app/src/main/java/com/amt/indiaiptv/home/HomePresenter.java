@@ -10,12 +10,21 @@ import android.widget.RelativeLayout;
 
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.mvp.BasePresenterImpl;
+import com.amt.indiaiptv.utils.LogUtils;
 import com.amt.indiaiptv.utils.bean.DataEntry;
 import com.amt.indiaiptv.utils.customizeview.MyVideoView;
+import com.amt.indiaiptv.utils.net.Api;
 import com.zhouwei.mzbanner.MZBannerView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * MVPPlugin
@@ -25,10 +34,43 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
 
     int position=0;
     @Override
-    public void init() {
-        mView.initBaner();
-        mView.initView();
-        mView.setVideo();
+    public void init(String code) {
+
+        Api.getDefault().getHomePage(code,999,1).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result  = response.body().string();
+                    JSONObject jSONObject = new JSONObject(result);
+                    String data = jSONObject.getString("data");
+
+
+                    LogUtils.i("get data :"+data);
+                    if (data==null||data.equals("")||data.equals("null")){
+                        mView.getDataFail();
+                    }else {
+
+                        mView.initBaner();
+                        mView.initView();
+                        mView.setVideo();
+
+
+                    }
+                } catch ( Exception e) {
+                    mView.getDataFail();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mView.getDataFail();
+                LogUtils.i("get data ecxception:"+t.getMessage());
+            }
+        });
+
+
+
     }
 
     @Override
@@ -38,7 +80,7 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
         for(int i=0;i<ids.length;i++){
             dataEntry = new DataEntry();
             dataEntry.resId = ids[i];
-            dataEntry.desc = "这是描述"+i;
+            dataEntry.desc = "Page"+(i+1);
             list.add(dataEntry);
         }
 

@@ -66,6 +66,11 @@ public interface ApiService {
     Call<ResponseBody> getPage(@Query("pageCode") String pageCode,@Query("pageSize") int pageSize,@Query("pageNumber") int pageNumber);
 
 
+    //获取home
+    @GET("vee/page/findPage")
+    Call<ResponseBody> getHomePage(@Query("projectCode") String projectCode,@Query("pageSize") int pageSize,@Query("pageNumber") int pageNumber);
+
+
     //   获取token
     @GET("apk/auth/getToken")
     Call<ResponseBody> getLoginToken();
