@@ -16,4 +16,8 @@ public class Constant {
     public static String serviceIP = "192.168.2.83";
     public static int  POTR = 8092;
     public static String  KEY = "abcdefabcdefabcdefabcdefabcdefabcdef";
+    public static String  ProjectCode = "4b52aa86460d4ef6ad99cbbe6e0471d9";
+    public static boolean recreate =false;
+    public static String recatedata ="";
+
 }

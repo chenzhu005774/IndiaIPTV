@@ -10,12 +10,14 @@ import android.widget.RelativeLayout;
 
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.mvp.BasePresenterImpl;
+import com.amt.indiaiptv.utils.Constant;
 import com.amt.indiaiptv.utils.LogUtils;
 import com.amt.indiaiptv.utils.bean.DataEntry;
 import com.amt.indiaiptv.utils.customizeview.MyVideoView;
 import com.amt.indiaiptv.utils.net.Api;
 import com.zhouwei.mzbanner.MZBannerView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -34,8 +36,46 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
 
     int position=0;
     @Override
-    public void init(String code) {
+    public void init(String data) {
+        try {
+            List<DataEntry> list = new ArrayList<>();
+            LogUtils.i("get data :"+data);
+            if (data==null||data.equals("")||data.equals("null")){
+                mView.getDataFail();
+            }else {
+                // 解析数据
+                JSONObject pageRecords = new JSONObject(data);
+                JSONArray jsons = pageRecords.getJSONArray("pageRecords");
 
+                for (int a= 0;a<jsons.length();a++){
+                    DataEntry dataEntry = new DataEntry();
+                    dataEntry.picUrl=Constant.pichttp+jsons.getJSONObject(a).getString("pageIcon");
+                    dataEntry.backUrl = Constant.pichttp+jsons.getJSONObject(a).getString("backgroundImage");
+                    dataEntry.pageCode = jsons.getJSONObject(a).getString("code");
+                    if (jsons.getJSONObject(a).getString("icon")!=null&&!jsons.getJSONObject(a).getString("icon").equals("null")){
+                        System.out.println("icon--->"+jsons.getJSONObject(a).getString("icon"));
+                       dataEntry.icon = jsons.getJSONObject(a).getString("icon");
+                    }
+                    dataEntry.title = jsons.getJSONObject(a).getString("name");
+
+                    list.add(dataEntry);
+                }
+
+                mView.initBaner( list);
+                mView.initView(list);
+                mView.setVideo();
+
+
+            }
+        } catch ( Exception e) {
+            mView.getDataFail();
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void reinit(String code) {
         Api.getDefault().getHomePage(code,999,1).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -43,19 +83,8 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
                     String result  = response.body().string();
                     JSONObject jSONObject = new JSONObject(result);
                     String data = jSONObject.getString("data");
+                    mView.reGetDataSuccess(data);
 
-
-                    LogUtils.i("get data :"+data);
-                    if (data==null||data.equals("")||data.equals("null")){
-                        mView.getDataFail();
-                    }else {
-
-                        mView.initBaner();
-                        mView.initView();
-                        mView.setVideo();
-
-
-                    }
                 } catch ( Exception e) {
                     mView.getDataFail();
                     e.printStackTrace();
@@ -68,9 +97,6 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
                 LogUtils.i("get data ecxception:"+t.getMessage());
             }
         });
-
-
-
     }
 
     @Override

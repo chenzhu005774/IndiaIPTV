@@ -124,8 +124,8 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                         textViewToolBean.setMarleft(itemcJson.getJSONObject("base").getInt("x"));
                         textViewToolBean.setMartop(itemcJson.getJSONObject("base").getInt("y"));
                         textViewToolBean.setTextsize(itemcJson.getJSONObject("text").getInt("fontSize"));
+
                         textViewToolBean.setText(itemcJson.getJSONObject("text").getString("text"));
-                        textViewToolBean.setHeigh(itemcJson.getJSONObject("text").getInt("lineHeight"));
                         textViewToolBean.setFocus(false);
                         //textViewToolBean.setTextCorol(itemcJson.getString("color")); textAlign
                         textViewTool.creatView(textViewToolBean, commonBean);

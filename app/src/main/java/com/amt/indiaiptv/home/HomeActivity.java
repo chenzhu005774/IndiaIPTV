@@ -16,8 +16,10 @@ import android.view.KeyEvent;
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.detail.DetailActivity;
 import com.amt.indiaiptv.mvp.MVPBaseActivity;
+import com.amt.indiaiptv.utils.Constant;
 import com.amt.indiaiptv.utils.DialogCallback;
 import com.amt.indiaiptv.utils.LogUtils;
+import com.amt.indiaiptv.utils.bean.DataEntry;
 import com.amt.indiaiptv.utils.bean.ViewPagerHolder;
 import com.amt.indiaiptv.utils.customizeview.MyVideoView;
 import com.amt.indiaiptv.utils.horizontalgridview.TitleModel;
@@ -25,6 +27,7 @@ import com.amt.indiaiptv.utils.horizontalgridview.TitlePresenter;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 
+import java.util.List;
 
 
 /**
@@ -32,7 +35,9 @@ import com.zhouwei.mzbanner.holder.MZHolderCreator;
  */
 
 public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresenter> implements HomeContract.View,DialogCallback {
-    private int[] ids ={R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3};
+//    private int[] ids ={R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3};
+    List<DataEntry> list;
+
     private MyVideoView videoview;
     private MZBannerView mMZBannerView;
     HorizontalGridView horizontalGridView;
@@ -44,13 +49,23 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mPresenter.init("4b52aa86460d4ef6ad99cbbe6e0471d9");
+        String data = getIntent().getStringExtra("data");
+        if ( Constant.recreate){
+            mPresenter.init(Constant.recatedata);
+        }else {
+            if (data.isEmpty()) {
+                mPresenter.reinit(Constant.ProjectCode);
+            } else {
+                mPresenter.init(data);
+            }
+        }
 
     }
     @Override
-    public void initBaner(){
+    public void initBaner(List<DataEntry> list){
+        this.list=list;
         mMZBannerView = findViewById(R.id.mz_view_pager);
-        mMZBannerView.setPages(mPresenter.mockData(ids), new MZHolderCreator<ViewPagerHolder>() {
+        mMZBannerView.setPages(list, new MZHolderCreator<ViewPagerHolder>() {
             @Override
             public ViewPagerHolder createViewHolder() {
                 return new ViewPagerHolder();
@@ -81,8 +96,15 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
     }
 
     @Override
-    public void initView() {
+    public void reGetDataSuccess(String data) {
+        Constant.recatedata =data;
+        Constant.recreate=true;
+        this.recreate();
+    }
 
+    @Override
+    public void initView(List<DataEntry> list) {
+        this.list=list;
         horizontalGridView = findViewById(R.id.hg_title);
         horizontalGridView.setHorizontalSpacing(132);
         titlePresenter =new TitlePresenter();
@@ -91,7 +113,7 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
 
 
         horizontalGridView.setAdapter(itemBridgeAdapter);
-        arrayObjectAdapter.addAll(0, TitleModel.getTitleList());
+        arrayObjectAdapter.addAll(0, list);
         horizontalGridView.requestFocus();
         horizontalGridView.setSelectedPosition(mPresenter.position);
         horizontalGridView.postDelayed(new Runnable() {
@@ -118,8 +140,8 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
                 mMZBannerView.viewpageMove(false);
                 mPresenter.position=horizontalGridView.getSelectedPosition();
                 mPresenter.showDirection(this);
-                if (mPresenter.position==6){
-                    itemBridgeAdapter.notifyItemChanged(6);
+                if (mPresenter.position==list.size()-1){
+                    itemBridgeAdapter.notifyItemChanged(list.size()-1);
                     horizontalGridView.scrollToPosition(0);
                 }
 
@@ -135,19 +157,28 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
                 mPresenter.showDirection(this);
                 mMZBannerView.viewpageMove(true);
                 if (mPresenter.position == 0) {
-                    horizontalGridView.scrollToPosition(6);
+                    horizontalGridView.scrollToPosition(list.size()-1);
                 }
             }else {
                 return  true;
             }
             DOUBLE_CLICK_TIME = System.currentTimeMillis();
         }else if (keyCode==KeyEvent.KEYCODE_DPAD_UP){
+            if (list==null){
+                return true;
+            }
             Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+            intent.putExtra("code",list.get(horizontalGridView.getSelectedPosition()).pageCode);
+            intent.putExtra("backUrl",list.get(horizontalGridView.getSelectedPosition()).backUrl);
             startActivity(intent);
-
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+            if (list==null){
+                return true;
+            }
             Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+            intent.putExtra("code",list.get(horizontalGridView.getSelectedPosition()).pageCode);
+            intent.putExtra("backUrl",list.get(horizontalGridView.getSelectedPosition()).backUrl);
             startActivity(intent);
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -157,6 +188,10 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
             }
             DOUBLE_CLICK_TIME = System.currentTimeMillis();
             mPresenter.showVideo(this);
+            return true;
+        }else if (keyCode == KeyEvent.KEYCODE_MENU) {
+
+            mPresenter.reinit(Constant.ProjectCode);
             return true;
         }
 

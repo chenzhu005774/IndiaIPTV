@@ -1,14 +1,15 @@
 package com.amt.indiaiptv.utils.toolview;
 
 
+import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.utils.Constant;
 import com.amt.indiaiptv.utils.commonbean.CommonBean;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 
 /**
@@ -27,7 +28,7 @@ final public class TextViewTool {
             rootlayout.setBackgroundResource(R.drawable.bgseletor);
         }
 
-        RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         if (textViewToolBean.focus) {
             //有背景框的话 就减去背景框的长度
             params.setMargins(textViewToolBean.getMarleft()- Constant.margin,textViewToolBean.getMartop()-Constant.margin,0,0);
@@ -46,7 +47,10 @@ final public class TextViewTool {
         textView.setHeight(textViewToolBean.getHeigh());
         textView.setGravity(Gravity.CENTER);
         textView.setText(textViewToolBean.getText());
-//        textView.setTextSize(textViewToolBean.getTextsize());
+//        TypedValue.COMPLEX_UNIT_PX : Pixels
+//        TypedValue.COMPLEX_UNIT_SP : Scaled Pixels
+//        TypedValue.COMPLEX_UNIT_DIP : Device Independent Pixels
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textViewToolBean.getTextsize());
         textView.setTextColor(commonBean.getContext().getResources().getColor(R.color.white));
         rootlayout.addView(textView);
         commonBean.getLayout().addView(rootlayout);

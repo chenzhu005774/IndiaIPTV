@@ -14,14 +14,16 @@ import java.util.List;
 
 public class HomeContract {
     interface View extends BaseView {
-        void  initView();
-        void  initBaner();
+        void  initView(List<DataEntry> list);
+        void  initBaner(List<DataEntry> list);
         void  setVideo();
         void  getDataFail();
+        void reGetDataSuccess(String data);
     }
 
     interface  Presenter extends BasePresenter<View> {
         void init(String code);
+        void reinit(String code);
         List<DataEntry> mockData(int[] ids);
         void showVideo(Activity activity);
         void showDirection(Activity activity );

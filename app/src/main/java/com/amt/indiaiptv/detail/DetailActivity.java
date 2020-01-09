@@ -1,6 +1,7 @@
 package com.amt.indiaiptv.detail;
 
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.mvp.MVPBaseActivity;
 import com.amt.indiaiptv.utils.DialogCallback;
 import com.amt.indiaiptv.utils.LogUtils;
+import com.amt.indiaiptv.utils.img.ViewbgLoader;
 
 
 /**
@@ -24,14 +26,26 @@ import com.amt.indiaiptv.utils.LogUtils;
 public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailPresenter> implements DetailContract.View , View.OnClickListener,View.OnFocusChangeListener ,DialogCallback {
 
     RelativeLayout parentlayout;
-
+    String code="";
+    String backUrl ="";
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         parentlayout = findViewById(R.id.root);
-        mPresenter.getData("96e23df0f7084f88a6eda6333d464b1e");
+        code =getIntent().getStringExtra("code");
+        backUrl=getIntent().getStringExtra("backUrl");
+        if (code==null){
+          LogUtils.showDialog(this,"code为空");
+            return;
+        }
+
+        if (backUrl!=null){
+            ViewbgLoader.getInstance().setBg(DetailActivity.this, backUrl,parentlayout);
+        }
+
+        mPresenter.getData(code);
     }
 
 
@@ -56,7 +70,7 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
 
     @Override
     public void clickSure() {
-        mPresenter.getData("96e23df0f7084f88a6eda6333d464b1e");
+        mPresenter.getData(code);
     }
 
 

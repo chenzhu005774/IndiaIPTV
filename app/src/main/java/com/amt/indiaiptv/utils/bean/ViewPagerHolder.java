@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amt.indiaiptv.R;
+import com.amt.indiaiptv.utils.Constant;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zhouwei.mzbanner.holder.MZViewHolder;
 
 public   class ViewPagerHolder implements MZViewHolder<DataEntry> {
@@ -23,8 +25,12 @@ public   class ViewPagerHolder implements MZViewHolder<DataEntry> {
 
         @Override
         public void onBind(Context context, int position, DataEntry data) {
-            mImageView.setImageResource(data.resId);
-            //ImageLoader.getInstance().displayImage("http://img5.imgtn.bdimg.com/it/u=2267991688,4104511967&fm=11&gp=0.jpg",mImageView);
+//            mImageView.setImageResource(data.resId);
+            if(data.resId!=0){
+                mImageView.setImageResource(data.resId);
+            }else {
+                ImageLoader.getInstance().displayImage(data.picUrl, mImageView);
+            }
             mDesc.setText(data.desc);
         }
     }

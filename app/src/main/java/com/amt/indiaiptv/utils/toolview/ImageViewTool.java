@@ -45,7 +45,7 @@ final public class ImageViewTool  {
         RelativeLayout.LayoutParams imgparams =  new RelativeLayout.LayoutParams(imageViewToolBean.getWidth(),imageViewToolBean.getHeigh());
         imgparams.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
         final ImageView imageView = new ImageView(commonBean.getContext());
-        imageView.setImageResource(R.mipmap.b1);
+        imageView.setImageResource(R.mipmap.bg_main);
         imageView.setTag(commonBean.getTag());
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setLayoutParams(imgparams);

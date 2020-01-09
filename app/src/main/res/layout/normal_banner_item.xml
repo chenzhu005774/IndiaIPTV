@@ -7,13 +7,14 @@
               android:layout_height="match_parent">
 
     <ImageView
-        android:src="@mipmap/b3"
+        android:src="@mipmap/bg_main"
         android:id="@+id/normal_banner_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         />
     <TextView
+        android:visibility="gone"
         android:text="依然饭特稀"
         android:id="@+id/page_desc"
         android:layout_width="match_parent"

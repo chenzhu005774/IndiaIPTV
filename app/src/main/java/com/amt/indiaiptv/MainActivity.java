@@ -11,14 +11,25 @@ import android.widget.Toast;
 
 import com.amt.indiaiptv.detail.DetailActivity;
 import com.amt.indiaiptv.home.HomeActivity;
+import com.amt.indiaiptv.utils.Constant;
+import com.amt.indiaiptv.utils.LogUtils;
 import com.amt.indiaiptv.utils.bean.DataEntry;
 import com.amt.indiaiptv.utils.bean.ViewPagerHolder;
 import com.amt.indiaiptv.utils.customizeview.RoundProgressBar;
+import com.amt.indiaiptv.utils.net.Api;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -29,10 +40,15 @@ public class MainActivity extends AppCompatActivity  {
     RoundProgressBar roundProgressBar;
     MZBannerView mMZBannerView;
     RelativeLayout relativelayout;
+
+    String data ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getHomedata(Constant.ProjectCode);
+
         roundProgressBar = findViewById(R.id.roundProgressBar);
         mMZBannerView = findViewById(R.id.banner_normal);
         relativelayout = findViewById(R.id.relativelayout);
@@ -68,13 +84,42 @@ public class MainActivity extends AppCompatActivity  {
         };
 
         handler.post(updateProgress);
+
     }
+
+    public String  getHomedata(String code){
+        Api.getDefault().getHomePage(code,999,1).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result  = response.body().string();
+                    JSONObject jSONObject = new JSONObject(result);
+                     data = jSONObject.getString("data");
+                } catch ( Exception e) {
+                    LogUtils.toast(MainActivity.this,"数据预加载失败!!!");
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                LogUtils.i("get data ecxception:"+t.getMessage());
+            }
+        });
+
+
+
+        return data;
+    }
+
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-            startActivity(new Intent(this, HomeActivity.class));
+            Intent intent = new Intent(this, HomeActivity.class)  ;
+            intent.putExtra("data",data);
+            startActivity(intent);
             this.finish();
             return true;
         }else if (keyCode==KeyEvent.KEYCODE_DPAD_LEFT){
