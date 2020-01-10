@@ -80,6 +80,15 @@ final public class ImageViewTool  {
 
         if (imageViewToolBean.focus){
             imageView.requestFocus();
+            imageView.requestFocusFromTouch();
+            imageView.setFocusable(true);
+            imageView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.requestFocus();
+                    imageView.requestFocusFromTouch();
+                }
+            },100);
         }
 
         commonBean.getLayout().addView(imageView);

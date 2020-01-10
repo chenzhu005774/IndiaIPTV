@@ -165,7 +165,7 @@ final public class TextViewTool {
         }
 
         txtparams.addRule(Gravity.CENTER,RelativeLayout.TRUE);//居中显示
-        TextView textView = new TextView(commonBean.getContext());
+        final TextView textView = new TextView(commonBean.getContext());
         textView.setFocusable(textViewToolBean.focus);
         textView.setFocusableInTouchMode(textViewToolBean.focus); 
         textView.setLayoutParams(txtparams);
@@ -176,7 +176,15 @@ final public class TextViewTool {
         textView.setTextColor(commonBean.getContext().getResources().getColor(R.color.white));
         if (textViewToolBean.focus){
             textView.requestFocus();
+            textView.requestFocusFromTouch();
             textView.setFocusable(true);
+            textView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textView.requestFocus();
+                    textView.requestFocusFromTouch();
+                }
+            },100);
         }
         commonBean.getLayout().addView(textView);
         textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
