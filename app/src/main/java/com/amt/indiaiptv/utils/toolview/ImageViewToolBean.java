@@ -20,6 +20,10 @@ public class ImageViewToolBean {
     boolean requesfocus =false;
     int focustype = 0;
     String focuspicurl;
+    int focuswidth;
+    int focusheigh;
+    int focustop;
+    int foculeft;
 
     // 跳转url
     String jumpurl;
@@ -107,5 +111,37 @@ public class ImageViewToolBean {
 
     public void setJumpurl(String jumpurl) {
         this.jumpurl = jumpurl;
+    }
+
+    public int getFocustop() {
+        return focustop;
+    }
+
+    public void setFocustop(int focustop) {
+        this.focustop = focustop;
+    }
+
+    public int getFoculeft() {
+        return foculeft;
+    }
+
+    public void setFoculeft(int foculeft) {
+        this.foculeft = foculeft;
+    }
+
+    public int getFocuswidth() {
+        return focuswidth;
+    }
+
+    public void setFocuswidth(int focuswidth) {
+        this.focuswidth = focuswidth;
+    }
+
+    public int getFocusheigh() {
+        return focusheigh;
+    }
+
+    public void setFocusheigh(int focusheigh) {
+        this.focusheigh = focusheigh;
     }
 }

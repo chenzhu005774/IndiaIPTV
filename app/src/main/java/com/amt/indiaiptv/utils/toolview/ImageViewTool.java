@@ -3,6 +3,7 @@ package com.amt.indiaiptv.utils.toolview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,33 +20,52 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * 一般的图片焦点控件
  * 布局中包含一个图片
  * 焦点在view布局上
+ *---------------有焦点的逻辑------------
+ * 外层margin  =图片的margin
+ * 外层宽高 =warp_content              --
+ *                                    --
+ * 焦点图片宽高 = 接口获取实际宽高       --
+ * 焦点图片margin = 如果 margintop>0   --
+ *                 那么 margintop=焦点 --
+ *                 图片偏移量          --
+ *                                    --
+ *                                    --
+ * 图片宽高 = 接口获取实际宽高的         --
+ * 图片margin = 焦点图片的偏移量        --
+ *--------------------------------------
+ *
+ *
  */
 final public class ImageViewTool  {
     public void creatView(final ImageViewToolBean imageViewToolBean , CommonBean commonBean ){
-        RelativeLayout rootlayout = new RelativeLayout(commonBean.getContext());
-//        rootlayout.setOnFocusChangeListener(commonBean.getFocusChangeListener());
-
-        rootlayout.setFocusable(imageViewToolBean.focus);
-        if (imageViewToolBean.focus) {
-            rootlayout.setBackgroundResource(R.drawable.bgseletor);
-        }
-
-        RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        if (imageViewToolBean.focus) {
-            //有背景框的话 就减去背景框的长度
-            params.setMargins(imageViewToolBean.getMarleft()- Constant.margin,imageViewToolBean.getMartop()- Constant.margin,0,0);
-        }else{
-            params.setMargins(imageViewToolBean.getMarleft() ,imageViewToolBean.getMartop() ,0,0);
-        }
-
-        rootlayout.setLayoutParams(params);
-        rootlayout.setTag(commonBean.getTag());
-        rootlayout.setOnClickListener(commonBean.getOnClickListener());
-
         RelativeLayout.LayoutParams imgparams =  new RelativeLayout.LayoutParams(imageViewToolBean.getWidth(),imageViewToolBean.getHeigh());
-        imgparams.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
         final ImageView imageView = new ImageView(commonBean.getContext());
-        imageView.setImageResource(R.mipmap.bg_main);
+        final ImageView focus = new ImageView(commonBean.getContext());
+        if (imageViewToolBean.focus&&imageViewToolBean.getFocustype()==1){
+            imgparams.setMargins(imageViewToolBean.getMarleft(),  imageViewToolBean.getMartop(), 0, 0);
+            //添加一个焦点背景图
+            RelativeLayout.LayoutParams focusparams =  new RelativeLayout.LayoutParams(imageViewToolBean.getFocuswidth(),imageViewToolBean.getFocusheigh());
+            focusparams.setMargins(imageViewToolBean.getMarleft()+imageViewToolBean.getFoculeft(),
+                                   imageViewToolBean.getMartop()+imageViewToolBean.getFocustop(),
+                                       0,0);
+
+            focus.setScaleType(ImageView.ScaleType.FIT_XY);
+            focus.setFocusable(false);
+            focus.setLayoutParams(focusparams);
+            focus.setVisibility(View.INVISIBLE);
+            ImageLoader.getInstance().displayImage(imageViewToolBean.getFocuspicurl(), focus);
+            commonBean.getLayout().addView(focus);
+
+        }else if(imageViewToolBean.focus&&imageViewToolBean.getFocustype()==0) {
+            imgparams.setMargins(imageViewToolBean.getMarleft()-Constant.margin,  imageViewToolBean.getMartop()-Constant.margin, 0, 0);
+            imageView.setBackgroundResource(R.drawable.bgseletor);
+        }else if (imageViewToolBean.focus&&imageViewToolBean.getFocustype()==2){
+                // TODO 暂时不用 图片替换
+        }else {
+            imgparams.setMargins(imageViewToolBean.getMarleft(),  imageViewToolBean.getMartop(), 0, 0);
+        }
+        imageView.setFocusable(imageViewToolBean.focus);
+        imageView.setFocusableInTouchMode(imageViewToolBean.focus);
         imageView.setTag(commonBean.getTag());
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setLayoutParams(imgparams);
@@ -58,26 +78,34 @@ final public class ImageViewTool  {
             imageView.setImageBitmap(decodedByte);
         }
 
-        rootlayout.addView(imageView);
-        rootlayout.requestFocus();
-        commonBean.getLayout().addView(rootlayout);
-        rootlayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        if (imageViewToolBean.focus){
+            imageView.requestFocus();
+        }
+
+        commonBean.getLayout().addView(imageView);
+        imageView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
               ImageViewToolBean  tagbean = (ImageViewToolBean) view.getTag();
 
                 if (b){
-                    if (Integer.valueOf(tagbean.getFocustype())==2) {
-                        view.setBackgroundResource(0); //去掉默认的焦点框 不要发光焦点框
-                        ImageLoader.getInstance().displayImage(tagbean.getFocuspicurl(), imageView);
+                    if (Integer.valueOf(tagbean.getFocustype())==2) {//0是默认焦点 1 是显示焦点图片 2是图片替换
+
+                    }else if (Integer.valueOf(tagbean.getFocustype())==1){
+                        focus.setVisibility(View.VISIBLE);
+                        imageView.requestFocus();
                     }
                 }else {
                     if (Integer.valueOf(tagbean.getFocustype())==2) {
-                        ImageLoader.getInstance().displayImage(tagbean.getUrl(), imageView);
+
+                    }else if (Integer.valueOf(tagbean.getFocustype())==1){
+                        focus.setVisibility(View.INVISIBLE);
                     }
                 }
             }
         });
+
+
     }
 
 

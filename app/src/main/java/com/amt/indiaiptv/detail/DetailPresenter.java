@@ -111,8 +111,9 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                         imageViewToolBean_nf.setMarleft(itemcJson.getJSONObject("base").getInt("x"));
                         imageViewToolBean_nf.setMartop(itemcJson.getJSONObject("base").getInt("y"));
                         imageViewToolBean_nf.setFocus(false);
-                        imageViewTool.creatView(imageViewToolBean_nf, commonBean);
                         commonBean.setTag(imageViewToolBean_nf);
+                        imageViewTool.creatView(imageViewToolBean_nf, commonBean);
+
                         break;
 
                     case "s_text":
@@ -128,8 +129,34 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                         textViewToolBean.setText(itemcJson.getJSONObject("text").getString("text"));
                         textViewToolBean.setFocus(false);
                         //textViewToolBean.setTextCorol(itemcJson.getString("color")); textAlign
-                        textViewTool.creatView(textViewToolBean, commonBean);
                         commonBean.setTag(textViewToolBean);
+                        textViewTool.creatView(textViewToolBean, commonBean);
+
+                        break;
+                    case "s_vas_text":
+                        TextViewToolBean textViewToolBean_f = new TextViewToolBean();
+                        //没有焦点文字
+                        textViewToolBean_f.setFocus(false);
+                        textViewToolBean_f.setHeigh(itemcJson.getJSONObject("base").getInt("height"));
+                        textViewToolBean_f.setWidth(itemcJson.getJSONObject("base").getInt("width"));
+                        textViewToolBean_f.setMarleft(itemcJson.getJSONObject("base").getInt("x"));
+                        textViewToolBean_f.setMartop(itemcJson.getJSONObject("base").getInt("y"));
+                        textViewToolBean_f.setTextsize(itemcJson.getJSONObject("text").getInt("fontSize"));
+
+                        textViewToolBean_f.setText(itemcJson.getJSONObject("text").getString("text"));
+                        textViewToolBean_f.setFocus(true);
+                        //textViewToolBean.setTextCorol(itemcJson.getString("color")); textAlign
+                        textViewToolBean_f.setFocustype( itemcJson.getJSONObject("focus").getInt("type"));
+                        if (textViewToolBean_f.getFocustype()==1) {
+                            textViewToolBean_f.setFocuswidth(itemcJson.getJSONObject("focus").getInt("width"));
+                            textViewToolBean_f.setFocusheigh(itemcJson.getJSONObject("focus").getInt("height"));
+                            textViewToolBean_f.setFoculeft(itemcJson.getJSONObject("focus").getInt("offsetX"));
+                            textViewToolBean_f.setFocustop(itemcJson.getJSONObject("focus").getInt("offsetY"));
+                            textViewToolBean_f.setFocuspicurl(itemcJson.getJSONObject("focus").getString("pic"));
+                        }
+                        commonBean.setTag(textViewToolBean_f);
+                        textViewTool.creatView(textViewToolBean_f, commonBean);
+
                         break;
                     case "s_time":
                         TextClockViewToolBean textClockViewToolBean = new TextClockViewToolBean();
@@ -140,8 +167,9 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                         textClockViewToolBean.setMartop(itemcJson.getJSONObject("base").getInt("y"));
                         textClockViewToolBean.setTextsize(itemcJson.getJSONObject("time").getInt("fontSize"));
                         textClockViewToolBean.setFormattype(itemcJson.getJSONObject("time").getString("format"));
-                        textClockViewTool.creatView(textClockViewToolBean, commonBean);
                         commonBean.setTag("s_time");
+                        textClockViewTool.creatView(textClockViewToolBean, commonBean);
+
                         //没有焦点
 
                         break;
@@ -160,6 +188,13 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                         imageViewToolBean_f.setFocustype(itemcJson.getJSONObject("focus").getInt("type"));
                         if (!itemcJson.getJSONObject("focus").isNull("pic")) {
                             imageViewToolBean_f.setFocuspicurl(itemcJson.getJSONObject("focus").getString("pic"));
+
+                            if (imageViewToolBean_f.getFocustype()==1) {
+                                imageViewToolBean_f.setFocuswidth(itemcJson.getJSONObject("focus").getInt("width"));
+                                imageViewToolBean_f.setFocusheigh(itemcJson.getJSONObject("focus").getInt("height"));
+                                imageViewToolBean_f.setFoculeft(itemcJson.getJSONObject("focus").getInt("offsetX"));
+                                imageViewToolBean_f.setFocustop(itemcJson.getJSONObject("focus").getInt("offsetY"));
+                            }
                         } else {
                             imageViewToolBean_f.setFocuspicurl("");
                         }
