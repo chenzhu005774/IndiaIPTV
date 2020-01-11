@@ -12,6 +12,7 @@ import android.support.v17.leanback.widget.FocusHighlightHelper;
 import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ItemBridgeAdapter;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.detail.DetailActivity;
@@ -24,6 +25,7 @@ import com.amt.indiaiptv.utils.bean.ViewPagerHolder;
 import com.amt.indiaiptv.utils.customizeview.MyVideoView;
 import com.amt.indiaiptv.utils.horizontalgridview.TitleModel;
 import com.amt.indiaiptv.utils.horizontalgridview.TitlePresenter;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 
@@ -35,9 +37,8 @@ import java.util.List;
  */
 
 public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresenter> implements HomeContract.View,DialogCallback {
-//    private int[] ids ={R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3,R.mipmap.b3};
     List<DataEntry> list;
-
+    SpinKitView spinKit;
     private MyVideoView videoview;
     private MZBannerView mMZBannerView;
     HorizontalGridView horizontalGridView;
@@ -49,16 +50,9 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        String data = getIntent().getStringExtra("data");
-        if ( Constant.recreate){
-            mPresenter.init(Constant.recatedata);
-        }else {
-            if (data.isEmpty()) {
-                mPresenter.reinit(Constant.ProjectCode);
-            } else {
-                mPresenter.init(data);
-            }
-        }
+        spinKit = findViewById(R.id.spin_kit);
+        mPresenter.getdata(Constant.ProjectCode);
+
 
     }
     @Override
@@ -90,16 +84,29 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
         videoview.start();
     }
 
+
+
+
     @Override
     public void getDataFail() {
-
+        spinKit.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                spinKit.setVisibility(View.GONE);
+            }
+        },1500);
     }
 
     @Override
-    public void reGetDataSuccess(String data) {
-        Constant.recatedata =data;
-        Constant.recreate=true;
-        this.recreate();
+    public void getDataSuccess(String data) {
+       mPresenter.init(data);
+       spinKit.postDelayed(new Runnable() {
+           @Override
+           public void run() {
+               spinKit.setVisibility(View.GONE);
+           }
+       },1500);
+
     }
 
     @Override
@@ -191,7 +198,7 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_MENU) {
 
-            mPresenter.reinit(Constant.ProjectCode);
+            this.recreate();
             return true;
         }
 

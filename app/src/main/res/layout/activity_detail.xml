@@ -10,6 +10,14 @@
     tools:context="com.amt.indiaiptv.detail.DetailActivity">
 
 
-
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        android:layout_centerInParent="true"
+        style="@style/SpinKitView.Large.CubeGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/theme" />
     
 </RelativeLayout>

@@ -15,6 +15,7 @@ public class DetailContract {
     interface View extends BaseView {
        void getDataSuccess(String data);
        void getDataFail();
+       void parserViewSuccess();
     }
 
     interface  Presenter extends BasePresenter<View> {

@@ -1,15 +1,11 @@
 package com.amt.indiaiptv.utils.toolview;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Base64;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.utils.Constant;
 import com.amt.indiaiptv.utils.commonbean.CommonBean;
@@ -32,7 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *                                    --
  * 图片宽高 = 接口获取实际宽高的         --
  * 图片margin = 焦点图片的偏移量        --
- *--------------------------------------
+ *----------以上逻辑已经废弃--------------
  *
  *
  */

@@ -75,7 +75,7 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
     }
 
     @Override
-    public void reinit(String code) {
+    public void getdata(String code) {
         Api.getDefault().getHomePage(code,999,1).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -83,7 +83,7 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
                     String result  = response.body().string();
                     JSONObject jSONObject = new JSONObject(result);
                     String data = jSONObject.getString("data");
-                    mView.reGetDataSuccess(data);
+                    mView.getDataSuccess(data);
 
                 } catch ( Exception e) {
                     mView.getDataFail();

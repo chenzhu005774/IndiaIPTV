@@ -16,6 +16,7 @@ import com.amt.indiaiptv.mvp.MVPBaseActivity;
 import com.amt.indiaiptv.utils.DialogCallback;
 import com.amt.indiaiptv.utils.LogUtils;
 import com.amt.indiaiptv.utils.img.ViewbgLoader;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 
 /**
@@ -24,7 +25,7 @@ import com.amt.indiaiptv.utils.img.ViewbgLoader;
  */
 
 public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailPresenter> implements DetailContract.View , View.OnClickListener,View.OnFocusChangeListener ,DialogCallback {
-
+    SpinKitView spinKit;
     RelativeLayout parentlayout;
     String code="";
     String backUrl ="";
@@ -57,6 +58,16 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
     @Override
     public void getDataFail() {
         LogUtils.showDialog(this,"布局失败,点击重试",this);
+    }
+
+    @Override
+    public void parserViewSuccess() {
+        spinKit.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                spinKit.setVisibility(View.GONE);
+            }
+        },1000);
     }
 
     @Override

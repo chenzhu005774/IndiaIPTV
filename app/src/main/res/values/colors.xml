@@ -16,4 +16,5 @@
     <color name="halfwhite">#22000000</color>
     <color name="fouhalfwhite">#44000000</color>
     <color name="update_theme_color">#FFFFAC5D</color>
+    <color name="theme">#FF8e5b</color>
 </resources>

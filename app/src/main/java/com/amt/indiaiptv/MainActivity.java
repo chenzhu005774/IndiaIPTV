@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getHomedata(Constant.ProjectCode);
+//        getHomedata(Constant.ProjectCode);
 
         roundProgressBar = findViewById(R.id.roundProgressBar);
         mMZBannerView = findViewById(R.id.banner_normal);
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity  {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
             Intent intent = new Intent(this, HomeActivity.class)  ;
-            intent.putExtra("data",data);
+//            intent.putExtra("data",data);
             startActivity(intent);
             this.finish();
             return true;
