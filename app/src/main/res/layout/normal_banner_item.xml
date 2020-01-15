@@ -14,8 +14,7 @@
         android:scaleType="fitXY"
         />
     <TextView
-        android:visibility="gone"
-        android:text="依然饭特稀"
+        android:visibility="invisible"
         android:id="@+id/page_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,5 +34,6 @@
         android:layout_marginRight="40dp"
         android:textSize="53sp"
         />
+
 
 </RelativeLayout>

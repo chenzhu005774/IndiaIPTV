@@ -9,7 +9,9 @@ import android.widget.RelativeLayout;
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.utils.Constant;
 import com.amt.indiaiptv.utils.commonbean.CommonBean;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * Created by Administrator on 2019/4/3.
@@ -49,7 +51,15 @@ final public class ImageViewTool  {
             focus.setFocusable(false);
             focus.setLayoutParams(focusparams);
             focus.setVisibility(View.INVISIBLE);
-            ImageLoader.getInstance().displayImage(imageViewToolBean.getFocuspicurl(), focus);
+            DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.bg_main) // 设置图片在下载期间显示的图片
+                    .showImageForEmptyUri(R.mipmap.bg_main)// 设置图片Uri为空或是错误的时候显示的图片
+                    .showImageOnFail(R.mipmap.bg_main) // 设置图片加载/解码过程中错误时候显示的图片
+                    .cacheInMemory(true)// 设置下载的图片是否缓存在内存中
+                    .cacheOnDisk(true)// 设置下载的图片是否缓存在SD卡中
+                    .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)// 设置图片以如何的编码方式显示
+                    .bitmapConfig(Bitmap.Config.RGB_565)// 设置图片的解码类型//
+                    .resetViewBeforeLoading(true).build();// 设置图片在下载前是否重置，复位
+            ImageLoader.getInstance().displayImage(imageViewToolBean.getFocuspicurl(), focus,options);
             commonBean.getLayout().addView(focus);
 
         }else if(imageViewToolBean.focus&&imageViewToolBean.getFocustype()==0) {
@@ -66,7 +76,18 @@ final public class ImageViewTool  {
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setLayoutParams(imgparams);
         if (null!=imageViewToolBean.getUrl()&&imageViewToolBean.getUrl().contains("http")) {
-            ImageLoader.getInstance().displayImage(imageViewToolBean.getUrl(), imageView);
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.bg_main) // 设置图片在下载期间显示的图片
+                    .showImageForEmptyUri(R.mipmap.bg_main)// 设置图片Uri为空或是错误的时候显示的图片
+                    .showImageOnFail(R.mipmap.bg_main) // 设置图片加载/解码过程中错误时候显示的图片
+                    .cacheInMemory(true)// 设置下载的图片是否缓存在内存中
+                    .cacheOnDisk(true)// 设置下载的图片是否缓存在SD卡中
+                    .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)// 设置图片以如何的编码方式显示
+                    .bitmapConfig(Bitmap.Config.RGB_565)// 设置图片的解码类型//
+                    .resetViewBeforeLoading(true).build();// 设置图片在下载前是否重置，复位
+            ImageLoader.getInstance().displayImage(imageViewToolBean.getUrl(), imageView,options);
+
+
             System.out.println("imageViewToolBean.getUrl():"+imageViewToolBean.getUrl());
         }else {
             byte[] decodedString = Base64.decode(imageViewToolBean.getUrl().split(",")[1], Base64.DEFAULT);
