@@ -1,6 +1,7 @@
 package com.amt.indiaiptv.detail;
 
 import android.content.Context;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -52,23 +53,25 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                     String data = jSONObject.getString("data");
 
 
-                    LogUtils.i("get data :"+data);
+                    LogUtils.i("get data :success");
                     if (data==null||data.equals("")||data.equals("null")){
-                        mView.getDataFail();
+                        mView.getDataFail(1);
+                        LogUtils.i("get data  exception:");
                     }else {
                         mView.getDataSuccess(data);
 
 
                     }
                 } catch ( Exception e) {
-                     mView.getDataFail();
+
+                     mView.getDataFail(2);
                      e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                mView.getDataFail();
+                mView.getDataFail(3);
                 LogUtils.i("get data ecxception:"+t.getMessage());
             }
         });
@@ -76,6 +79,7 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
 
     }
 
+    @RequiresApi(api = 28)
     @Override
     public void parserView(String data, RelativeLayout parentlayout,
                            View.OnFocusChangeListener onFocusChangeListener, View.OnClickListener onClickListener) {
@@ -142,6 +146,9 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
                         textViewToolBean_f.setMarleft(itemcJson.getJSONObject("base").getInt("x"));
                         textViewToolBean_f.setMartop(itemcJson.getJSONObject("base").getInt("y"));
                         textViewToolBean_f.setTextsize(itemcJson.getJSONObject("text").getInt("fontSize"));
+                        textViewToolBean_f.setLineHight(itemcJson.getJSONObject("text").getInt("lineHeight"));
+                        textViewToolBean_f.setColor(itemcJson.getJSONObject("text").getString("color"));
+
 
                         textViewToolBean_f.setText(itemcJson.getJSONObject("text").getString("text"));
                         textViewToolBean_f.setFocus(true);
@@ -226,8 +233,11 @@ public class DetailPresenter extends BasePresenterImpl<DetailContract.View> impl
             }
 
 
+
+
     } catch (JSONException e) {
             e.printStackTrace();
+
         }
 
 

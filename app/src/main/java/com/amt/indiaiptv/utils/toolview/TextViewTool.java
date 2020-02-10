@@ -1,7 +1,9 @@
 package com.amt.indiaiptv.utils.toolview;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.support.annotation.RequiresApi;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.amt.indiaiptv.R;
 import com.amt.indiaiptv.utils.Constant;
+import com.amt.indiaiptv.utils.LogUtils;
 import com.amt.indiaiptv.utils.commonbean.CommonBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -33,12 +36,13 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  *----------以上逻辑已经废弃-----------------
  */
 final public class TextViewTool {
-    public void creatView(TextViewToolBean textViewToolBean,CommonBean commonBean ){
+
+    public void creatView(TextViewToolBean textViewToolBean, CommonBean commonBean ){
     RelativeLayout.LayoutParams txtparams =  new RelativeLayout.LayoutParams(textViewToolBean.getWidth(),textViewToolBean.getHeigh());
 
         final ImageView focus = new ImageView(commonBean.getContext());
-       
-         
+
+
         if (textViewToolBean.focus&&textViewToolBean.getFocustype()==0) {
             //有背景框的话 就减去背景框的长度
             txtparams.setMargins(textViewToolBean.getMarleft()-Constant.margin,textViewToolBean.getMartop()-Constant.margin,0,0);
@@ -73,8 +77,17 @@ final public class TextViewTool {
         textView.setGravity(Gravity.CENTER);
         textView.setTag(commonBean.getTag());
         textView.setText(textViewToolBean.getText());
+        textView.setLineHeight(textViewToolBean.getLineHight());
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textViewToolBean.getTextsize());
-        textView.setTextColor(commonBean.getContext().getResources().getColor(R.color.white));
+        try {
+            textView.setTextColor(Color.parseColor(textViewToolBean.getColor()));
+        }catch (Exception e){
+            textView.setTextColor(commonBean.getContext().getResources().getColor(R.color.white));
+        }
+
+        commonBean.getLayout().addView(textView);
+        LogUtils.i("-------------------------------------caocaocao");
+//        textView.setTextColor(Color.parseColor(textViewToolBean.getColor()));
         if (textViewToolBean.focus){
             textView.requestFocus();
             textView.requestFocusFromTouch();
@@ -87,7 +100,7 @@ final public class TextViewTool {
                 }
             },100);
         }
-        commonBean.getLayout().addView(textView);
+
         textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {

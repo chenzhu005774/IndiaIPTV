@@ -26,6 +26,9 @@ import com.amt.indiaiptv.utils.customizeview.MyVideoView;
 import com.amt.indiaiptv.utils.horizontalgridview.TitleModel;
 import com.amt.indiaiptv.utils.horizontalgridview.TitlePresenter;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 
@@ -197,6 +200,15 @@ public class HomeActivity extends MVPBaseActivity<HomeContract.View, HomePresent
             mPresenter.showVideo(this);
             return true;
         }else if (keyCode == KeyEvent.KEYCODE_MENU) {
+
+     if (list!=null) {
+          for (DataEntry dataEntry :list){
+              DiskCacheUtils.removeFromCache(dataEntry.picUrl, ImageLoader.getInstance().getDiskCache());
+              MemoryCacheUtils.removeFromCache(dataEntry.picUrl, ImageLoader.getInstance().getMemoryCache());
+          }
+
+      }
+
 
             this.recreate();
             return true;

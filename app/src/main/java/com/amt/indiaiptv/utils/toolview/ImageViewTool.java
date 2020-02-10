@@ -67,6 +67,8 @@ final public class ImageViewTool  {
             imageView.setBackgroundResource(R.drawable.bgseletor);
         }else if (imageViewToolBean.focus&&imageViewToolBean.getFocustype()==2){
                 // TODO 暂时不用 图片替换
+            imgparams.setMargins(imageViewToolBean.getMarleft(),  imageViewToolBean.getMartop(), 0, 0);
+
         }else {
             imgparams.setMargins(imageViewToolBean.getMarleft(),  imageViewToolBean.getMartop(), 0, 0);
         }
@@ -116,13 +118,16 @@ final public class ImageViewTool  {
 
                 if (b){
                     if (Integer.valueOf(tagbean.getFocustype())==2) {//0是默认焦点 1 是显示焦点图片 2是图片替换
-
+                        ImageLoader.getInstance().displayImage(imageViewToolBean.getFocuspicurl(), imageView);
+                        imageView.requestFocus();
                     }else if (Integer.valueOf(tagbean.getFocustype())==1){
                         focus.setVisibility(View.VISIBLE);
                         imageView.requestFocus();
                     }
                 }else {
                     if (Integer.valueOf(tagbean.getFocustype())==2) {
+
+                        ImageLoader.getInstance().displayImage(imageViewToolBean.getUrl(), imageView);
 
                     }else if (Integer.valueOf(tagbean.getFocustype())==1){
                         focus.setVisibility(View.INVISIBLE);

@@ -34,7 +34,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity  {
 
-    private int[] ids ={R.mipmap.hotel1,R.mipmap.hotel1,R.mipmap.hotel1,R.mipmap.hotel1};
+    private int[] ids ={R.mipmap.hotel1,R.mipmap.hotel2,R.mipmap.hotel3,R.mipmap.hotel4,R.mipmap.hotel5};
     Handler handler = new Handler();
     Runnable updateProgress;
     RoundProgressBar roundProgressBar;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity  {
         updateProgress = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this,50);
+                handler.postDelayed(this,25);
                 if (roundProgressBar.getProgress()>=100){
                     roundProgressBar.setProgress(0);
                     mMZBannerView.viewpageMove(false);

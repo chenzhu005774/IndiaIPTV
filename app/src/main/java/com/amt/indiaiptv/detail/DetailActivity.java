@@ -35,6 +35,7 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         parentlayout = findViewById(R.id.root);
+        spinKit=findViewById(R.id.spin_kit);
         code =getIntent().getStringExtra("code");
         backUrl=getIntent().getStringExtra("backUrl");
         if (code==null){
@@ -53,15 +54,6 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
     @Override
     public void getDataSuccess(String data) {
         mPresenter.parserView(data,parentlayout,this,this);
-    }
-
-    @Override
-    public void getDataFail() {
-        LogUtils.showDialog(this,"布局失败,点击重试",this);
-    }
-
-    @Override
-    public void parserViewSuccess() {
         spinKit.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -69,6 +61,13 @@ public class DetailActivity extends MVPBaseActivity<DetailContract.View, DetailP
             }
         },1000);
     }
+
+    @Override
+    public void getDataFail(int a) {
+        LogUtils.showDialog(this,"布局失败,点击重试"+a,this);
+    }
+
+
 
     @Override
     public void onClick(View v) {

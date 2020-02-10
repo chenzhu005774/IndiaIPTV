@@ -14,6 +14,7 @@ public class TextViewToolBean {
     String  text;
     int  textsize;
     boolean focus;
+    String color;
 
 
     String url;//图片地址
@@ -25,6 +26,23 @@ public class TextViewToolBean {
     int focustop;
     int foculeft;
 
+    int lineHight;
+
+    public int getLineHight() {
+        return lineHight;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setLineHight(int lineHight) {
+        this.lineHight = lineHight;
+    }
 
     public String getText() {
         return text;

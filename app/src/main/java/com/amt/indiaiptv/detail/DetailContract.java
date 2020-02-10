@@ -14,8 +14,7 @@ import com.amt.indiaiptv.mvp.BaseView;
 public class DetailContract {
     interface View extends BaseView {
        void getDataSuccess(String data);
-       void getDataFail();
-       void parserViewSuccess();
+       void getDataFail(int a);
     }
 
     interface  Presenter extends BasePresenter<View> {
